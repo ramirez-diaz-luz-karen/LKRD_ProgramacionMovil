@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificar letra DNI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    label, input {
+      display: block;
+      margin: 10px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 5px 10px;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+  <!-- Cargamos el script con defer para que espere a que cargue el DOM -->
+  <script src="CalculoDNI.js" defer></script>
+</head>
+<body>
+  <h1>Verificar letra DNI</h1>
+  <form id="formularioDNI">
+    <input type="text" id="dni" placeholder="Número de DNI" />
+    <input type="text" id="letra" placeholder="Letra" />
+    <button type="submit">Verificar</button>
+  </form>
+  <p id="resultado"></p>
+</body>
+</html>

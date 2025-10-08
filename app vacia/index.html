@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calculadora Distribuida</title>
+  <style>
+    body {
+      background-color: #1e1e2f;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    #pantalla {
+      font-size: 36px;
+      color: #00ffcc;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    #resultado {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    .teclado {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .numeros, .operaciones {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .numeros {
+      width: 240px;
+    }
+    button {
+      width: 70px;
+      height: 70px;
+      margin: 5px;
+      border-radius: 10px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    .boton { background-color: #3f51b5; }
+    .botonOperacion { background-color: #ff9800; }
+    .botonIgual { background-color: #4caf50; }
+    .botonLimpiar { background-color: #f44336; }
+  </style>
+</head>
+<body>
+  <h1>Calculadora Distribuida</h1>
+  <div id="pantalla">0</div>
+  <div id="resultado"></div>
+
+  <div class="teclado">
+    <div class="numeros">
+      <!-- Números y punto -->
+      <button class="boton" onclick="presionar('7')">7</button>
+      <button class="boton" onclick="presionar('8')">8</button>
+      <button class="boton" onclick="presionar('9')">9</button>
+      <button class="boton" onclick="presionar('4')">4</button>
+      <button class="boton" onclick="presionar('5')">5</button>
+      <button class="boton" onclick="presionar('6')">6</button>
+      <button class="boton" onclick="presionar('1')">1</button>
+      <button class="boton" onclick="presionar('2')">2</button>
+      <button class="boton" onclick="presionar('3')">3</button>
+      <button class="boton" onclick="presionar('0')">0</button>
+      <button class="boton" onclick="presionar('.')">.</button>
+      <button class="botonLimpiar" onclick="limpiar()">C</button>
+    </div>
+    <div class="operaciones">
+      <button class="botonOperacion" onclick="presionar('+')">+</button>
+      <button class="botonOperacion" onclick="presionar('-')">−</button>
+      <button class="botonOperacion" onclick="presionar('*')">×</button>
+      <button class="botonOperacion" onclick="presionar('/')">÷</button>
+      <button class="botonIgual" onclick="calcular()">=</button>
+    </div>
+  </div>
+
+  <script src="appWeb.js"></script>
+</body>
+</html>

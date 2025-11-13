@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
-export default function CalculadoraDistribuida() {
+export default function CalculadoraBasica() {
   const [input, setInput] = useState("");
   const [resultado, setResultado] = useState("");
 
@@ -11,7 +11,7 @@ export default function CalculadoraDistribuida() {
 
   const calcular = () => {
     try {
-      const evalResultado = eval(input); 
+      const evalResultado = eval(input);
       setResultado(evalResultado.toString());
     } catch {
       setResultado("Error");
@@ -25,34 +25,24 @@ export default function CalculadoraDistribuida() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>Calculadora Distribuida</Text>
+      <Text style={styles.titulo}>Calculadora Básica</Text>
       <Text style={styles.pantalla}>{input || "0"}</Text>
       <Text style={styles.resultado}>{resultado ? `= ${resultado}` : ""}</Text>
 
       <View style={styles.teclado}>
-        <View style={styles.numeros}>
-          {["7", "8", "9", "4", "5", "6", "1", "2", "3", "0", ".", "C"].map((item) => (
-            <TouchableOpacity
-              key={item}
-              style={item === "C" ? styles.botonLimpiar : styles.boton}
-              onPress={() => item === "C" ? limpiar() : presionar(item)}
-            >
-              <Text style={styles.textoBoton}>{item}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        <View style={styles.operaciones}>
-          {["+", "−", "×", "÷", "="].map((op) => (
-            <TouchableOpacity
-              key={op}
-              style={op === "=" ? styles.botonIgual : styles.botonOperacion}
-              onPress={() => op === "=" ? calcular() : presionar(op === "×" ? "*" : op === "÷" ? "/" : op)}
-            >
-              <Text style={styles.textoBoton}>{op}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        {["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "-", "*", "/", "=", "C"].map((item) => (
+          <TouchableOpacity
+            key={item}
+            style={styles.boton}
+            onPress={() => {
+              if (item === "=") calcular();
+              else if (item === "C") limpiar();
+              else presionar(item);
+            }}
+          >
+            <Text style={styles.textoBoton}>{item}</Text>
+          </TouchableOpacity>
+        ))}
       </View>
     </View>
   );
@@ -61,82 +51,42 @@ export default function CalculadoraDistribuida() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1e1e2f",
+    backgroundColor: "#222",
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
   },
   titulo: {
-    fontSize: 28,
-    color: "#ffffff",
+    fontSize: 24,
+    color: "#fff",
     marginBottom: 10,
-    fontWeight: "bold",
   },
   pantalla: {
-    fontSize: 36,
+    fontSize: 32,
     color: "#00ffcc",
     marginBottom: 10,
-    fontWeight: "bold",
   },
   resultado: {
     fontSize: 28,
-    color: "#ffffff",
+    color: "#fff",
     marginBottom: 20,
   },
   teclado: {
     flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "flex-start",
-  },
-  numeros: {
-    flexDirection: "row",
     flexWrap: "wrap",
-    width: 240,
     justifyContent: "center",
-  },
-  operaciones: {
-    marginLeft: 10,
-    justifyContent: "space-between",
   },
   boton: {
-    backgroundColor: "#3f51b5",
-    width: 70,
-    height: 70,
-    margin: 5,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  botonOperacion: {
-    backgroundColor: "#ff9800",
-    width: 70,
-    height: 70,
-    marginVertical: 5,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  botonIgual: {
-    backgroundColor: "#4caf50",
-    width: 70,
-    height: 70,
-    marginVertical: 5,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  botonLimpiar: {
-    backgroundColor: "#f44336",
-    width: 70,
-    height: 70,
+    backgroundColor: "#444",
+    width: 60,
+    height: 60,
     margin: 5,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
   },
   textoBoton: {
-    fontSize: 28,
-    color: "#ffffff",
-    fontWeight: "bold",
+    fontSize: 24,
+    color: "#fff",
   },
 });

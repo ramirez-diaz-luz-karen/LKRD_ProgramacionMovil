@@ -1,5 +1,9 @@
 {
   "devDependencies": {
     "@web/dev-server": "^0.4.6"
+  },
+  "dependencies": {
+    "expo": "^54.0.13",
+    "expo-image-picker": "~17.0.8"
   }
 }

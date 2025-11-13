@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import {
   StyleSheet,
   Text,
@@ -8,33 +9,34 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  Alert,
 } from 'react-native';
 
 export default function App() {
   const [peso, setPeso] = useState('');
   const [altura, setAltura] = useState('');
-  const [genero, setGenero] = useState(null);
   const [resultado, setResultado] = useState(null);
 
   const calcularIMC = () => {
     const pesoNum = parseFloat(peso);
     const alturaNum = parseFloat(altura) / 100;
-    if (!pesoNum || !alturaNum || !genero) return;
+
+    if (!peso || isNaN(pesoNum) || pesoNum <= 0) {
+      Alert.alert('Ingresa un peso válido');
+      return;
+    }
+    if (!altura || isNaN(alturaNum) || alturaNum <= 0) {
+      Alert.alert('Ingresa una altura válida');
+      return;
+    }
 
     const imc = pesoNum / (alturaNum * alturaNum);
     let mensaje = '';
 
-    if (genero === 'mujer') {
-      if (imc < 18.5) mensaje = 'Bajo peso';
-      else if (imc < 23.9) mensaje = 'Normal';
-      else if (imc < 28.9) mensaje = 'Sobrepeso';
-      else mensaje = 'Obesidad';
-    } else {
-      if (imc < 18.5) mensaje = 'Bajo peso';
-      else if (imc < 24.9) mensaje = 'Normal';
-      else if (imc < 29.9) mensaje = 'Sobrepeso';
-      else mensaje = 'Obesidad';
-    }
+    if (imc < 18.5) mensaje = 'Bajo peso';
+    else if (imc < 25) mensaje = 'Normal';
+    else if (imc < 30) mensaje = 'Sobrepeso';
+    else mensaje = 'Obesidad';
 
     setResultado(`IMC: ${imc.toFixed(1)} (${mensaje})`);
   };
@@ -44,34 +46,22 @@ export default function App() {
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <Text style={styles.titulo}>Calculadora de IMC</Text>
 
-        <View style={styles.generoContainer}>
-          <TouchableOpacity
-            style={[styles.generoBoton, genero === 'mujer' && styles.generoActivo]}
-            onPress={() => setGenero('mujer')}
-          >
-            <Text style={styles.generoTexto}>Mujer</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.generoBoton, genero === 'hombre' && styles.generoActivo]}
-            onPress={() => setGenero('hombre')}
-          >
-            <Text style={styles.generoTexto}>Hombre</Text>
-          </TouchableOpacity>
-        </View>
-
         <TextInput
           style={styles.input}
           placeholder="Peso (kg)"
           keyboardType="numeric"
           value={peso}
           onChangeText={setPeso}
+          maxLength={3}
         />
+
         <TextInput
           style={styles.input}
           placeholder="Altura (cm)"
           keyboardType="numeric"
           value={altura}
           onChangeText={setAltura}
+          maxLength={3}
         />
 
         <TouchableOpacity style={styles.boton} onPress={calcularIMC}>
@@ -79,51 +69,32 @@ export default function App() {
         </TouchableOpacity>
 
         {resultado && (
-          <>
+          <View style={styles.resultadoContainer}>
             <Text style={styles.resultado}>{resultado}</Text>
             <Image
               source={require('./assets/img/IMC.jpeg')}
               style={styles.imagen}
               resizeMode="contain"
             />
-          </>
+          </View>
         )}
       </KeyboardAvoidingView>
     </View>
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f4f8',
+    backgroundColor: '#eaf4fc',
     justifyContent: 'center',
     padding: 24,
   },
   titulo: {
-    fontSize: 32,
-    color: '#333',
+    fontSize: 30,
+    color: '#2c3e50',
     textAlign: 'center',
     marginBottom: 30,
-    fontWeight: 'bold',
-  },
-  generoContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-  generoBoton: {
-    backgroundColor: '#ddd',
-    padding: 12,
-    marginHorizontal: 10,
-    borderRadius: 8,
-  },
-  generoActivo: {
-    backgroundColor: '#4a90e2',
-  },
-  generoTexto: {
-    color: '#333',
     fontWeight: 'bold',
   },
   input: {
@@ -131,31 +102,35 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     fontSize: 18,
-    marginBottom: 20,
-    borderColor: '#ccc',
+    marginBottom: 16,
+    borderColor: '#bdc3c7',
     borderWidth: 1,
   },
   boton: {
-    backgroundColor: '#4a90e2',
+    backgroundColor: '#2ecc71',
     padding: 16,
     borderRadius: 12,
     alignItems: 'center',
     marginTop: 10,
+    elevation: 3,
   },
   botonTexto: {
     fontSize: 18,
     color: '#fff',
     fontWeight: 'bold',
   },
-  resultado: {
+  resultadoContainer: {
     marginTop: 30,
-    fontSize: 22,
-    color: '#333',
-    textAlign: 'center',
+    alignItems: 'center',
+  },
+  resultado: {
+    fontSize: 24,
+    color: '#34495e',
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
   imagen: {
     width: '100%',
-    height: 400,
-    marginTop: 20,
+    height: 250,
   },
 });

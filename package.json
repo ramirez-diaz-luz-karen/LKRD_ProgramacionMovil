@@ -4,6 +4,7 @@
   },
   "dependencies": {
     "expo": "^54.0.13",
-    "expo-image-picker": "~17.0.8"
+    "expo-image-picker": "~17.0.8",
+    "firebase": "^12.6.0"
   }
 }

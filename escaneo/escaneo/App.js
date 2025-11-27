@@ -1,7 +1,18 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as Sharing from 'expo-sharing';
 import { useRef, useState } from 'react';
-import { Button, View, Image, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import {
+  Button,
+  View,
+  Image,
+  Text,
+  TextInput,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  TouchableOpacity
+} from 'react-native';
 
 export default function App() {
   const [permission, requestPermission] = useCameraPermissions();
@@ -14,8 +25,10 @@ export default function App() {
   if (!permission.granted) {
     return (
       <View style={styles.center}>
-        <Text>Necesitas permitir acceso a la cámara</Text>
-        <Button title="Dar permiso" onPress={requestPermission} />
+        <Text style={styles.permissionText}>Necesitas permitir acceso a la cámara</Text>
+        <TouchableOpacity style={styles.buttonPrimary} onPress={requestPermission}>
+          <Text style={styles.buttonText}>Dar permiso</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -28,67 +41,158 @@ export default function App() {
   };
 
   const sharePhoto = async () => {
-    if (photo) {
-      await Sharing.shareAsync(photo);
-    }
+    if (photo) await Sharing.shareAsync(photo);
   };
 
   const handleLogin = () => {
     alert(`Usuario: ${username}\nContraseña: ${password}`);
   };
 
-  // 👇 Aquí sí va el return, dentro de la función App
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 20 }}>
-        <Text style={styles.title}>Iniciar sesión</Text>
+      <ScrollView contentContainerStyle={styles.scroll}>
+        <View style={styles.containerCard}>
 
-        {photo ? (
-          <>
-            <Image source={{ uri: photo }} style={styles.photo} />
-            <Button title="Tomar otra" onPress={() => setPhoto(null)} />
-            <Button title="Compartir foto" onPress={sharePhoto} />
-          </>
-        ) : (
-          <>
-            <CameraView ref={cameraRef} style={styles.camera} />
-            <Button title="Tomar foto" onPress={takePhoto} />
-          </>
-        )}
+          <Text style={styles.title}>Iniciar sesión</Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Nombre de usuario"
-          value={username}
-          onChangeText={setUsername}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Contraseña"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
+          {photo ? (
+            <>
+              <Image source={{ uri: photo }} style={styles.photo} />
+              <TouchableOpacity style={styles.buttonSecondary} onPress={() => setPhoto(null)}>
+                <Text style={styles.buttonText}>Tomar otra</Text>
+              </TouchableOpacity>
 
-        <Button title="Aceptar" onPress={handleLogin} />
+              <TouchableOpacity style={styles.buttonPrimary} onPress={sharePhoto}>
+                <Text style={styles.buttonText}>Compartir foto</Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              <CameraView ref={cameraRef} style={styles.camera} />
+              <TouchableOpacity style={styles.buttonPrimary} onPress={takePhoto}>
+                <Text style={styles.buttonText}>Tomar foto</Text>
+              </TouchableOpacity>
+            </>
+          )}
+
+          <TextInput
+            style={styles.input}
+            placeholder="Nombre de usuario"
+            placeholderTextColor="#888"
+            value={username}
+            onChangeText={setUsername}
+          />
+
+          <TextInput
+            style={styles.input}
+            placeholder="Contraseña"
+            placeholderTextColor="#888"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+
+          <TouchableOpacity style={styles.buttonPrimary} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Aceptar</Text>
+          </TouchableOpacity>
+
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-  camera: { height: 200, marginBottom: 10 },
-  photo: { height: 200, marginBottom: 10 },
+  scroll: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    paddingVertical: 30,
+    paddingHorizontal: 20,
+    backgroundColor: '#e3f2fd', // Azul claro
+  },
+
+  containerCard: {
+    backgroundColor: 'white',
+    padding: 25,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#0d47a1',
+    textAlign: 'center',
+    marginBottom: 25,
+  },
+
+  center: {
+    flex: 1,
+    backgroundColor: '#e3f2fd',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+
+  permissionText: {
+    fontSize: 18,
+    marginBottom: 20,
+    color: '#0d47a1',
+    textAlign: 'center',
+  },
+
+  camera: {
+    height: 250,
+    borderRadius: 18,
+    overflow: 'hidden',
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: '#64b5f6',
+  },
+
+  photo: {
+    height: 250,
+    borderRadius: 18,
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: '#64b5f6',
+  },
+
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    marginVertical: 5,
-    borderRadius: 5,
+    borderColor: '#b0bec5',
+    padding: 14,
+    borderRadius: 12,
+    marginBottom: 15,
+    backgroundColor: '#fff',
+    fontSize: 16,
+  },
+
+  buttonPrimary: {
+    backgroundColor: '#1e88e5',
+    paddingVertical: 14,
+    borderRadius: 12,
+    marginBottom: 12,
+    alignItems: 'center',
+  },
+
+  buttonSecondary: {
+    backgroundColor: '#6d4c41',
+    paddingVertical: 14,
+    borderRadius: 12,
+    marginBottom: 12,
+    alignItems: 'center',
+  },
+
+  buttonText: {
+    color: '#fff',
+    fontSize: 17,
+    fontWeight: '600',
   },
 });

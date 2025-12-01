@@ -19,7 +19,7 @@ export default function App() {
   const [photo, setPhoto] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [qrData, setQrData] = useState(null); // Nuevo estado para QR
+  const [qrData, setQrData] = useState(null);
 
   if (!permission) return <View />;
   if (!permission.granted) {
@@ -48,7 +48,6 @@ export default function App() {
     alert(`Usuario: ${username}\nContraseña: ${password}`);
   };
 
-  // Función para manejar QR
   const handleBarcodeScanned = ({ type, data }) => {
     setQrData(data);
     alert(`Código QR detectado:\n${data}`);

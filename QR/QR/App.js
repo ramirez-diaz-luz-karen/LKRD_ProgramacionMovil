@@ -79,7 +79,6 @@ export default function App() {
     }
   };
 
-  // ---- Cámara para foto de perfil ----
   const abrirCamara = async () => {
     const { status } = await requestPermission();
     if (status !== "granted") {
@@ -262,7 +261,7 @@ export default function App() {
  
   return (
     <SafeAreaView style={styles.container}>
-      {/* --- MODAL / PANTALLA: Cámara para foto de perfil --- */}
+      {}
       <Modal visible={showCamera} animationType="slide" presentationStyle="fullScreen">
         <SafeAreaView style={styles.cameraContainer}>
           <CameraView
@@ -426,7 +425,6 @@ export default function App() {
 
           <View style={{ height: 8 }} />
 
-          <Text style={styles.hint}>Usuario de prueba: <Text style={{fontWeight:'700'}}>admin</Text> / Contraseña: <Text style={{fontWeight:'700'}}>1234</Text></Text>
         </View>
       ) : (
         <ScrollView contentContainerStyle={styles.mainContent}>
